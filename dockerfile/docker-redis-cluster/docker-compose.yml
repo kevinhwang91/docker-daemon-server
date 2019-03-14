@@ -1,0 +1,19 @@
+version: "3.5"
+services:
+  redis-cluster:
+    image: "grokzen/redis-cluster:3.2.8"
+    environment:
+      IP: ${REDIS_CLUSTER_IP}
+      SENTINEL: ${REDIS_USE_SENTINEL}
+      STANDALONE: ${REDIS_USE_STANDALONE}
+    hostname: server
+    networks:
+      - backend
+    ports:
+      - "7000-7007:7000-7007"
+      - "5000-5002:5000-5002"
+
+networks:
+  backend:
+    name: backend
+    external: true

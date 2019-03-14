@@ -1,0 +1,32 @@
+version: "3.5"
+
+services:
+  shadowsocks:
+    image: kevinhwang/shadowsocks
+    container_name: shadowsocks
+    ports:
+      - 1080:1080
+    networks:
+      - sslocal
+    environment:
+      SERVER: ${SERVER}
+      PASSWORD: ${PASSWORD}
+      SERVER_PORT: ${SERVER_PORT}
+    restart: always
+    command: ["ss-local", "-s", "${SERVER}", "-p", "${SERVER_PORT}", "-l", "1080", "-b", "0.0.0.0", "-k", "${PASSWORD}", "-m", "aes-256-cfb"]
+
+  privoxy:
+    image: kevinhwang/privoxy
+    container_name: privoxy
+    ports:
+      - 8118:8118
+    networks:
+      - sslocal
+    volumes:
+      - ../../config/privoxy/sslocal.conf:/etc/conf/sslocal.conf
+    restart: always
+    command: ["privoxy", "--no-daemon", "/etc/conf/sslocal.conf"]
+
+networks:
+  sslocal:
+    name: sslocal
