@@ -9,8 +9,8 @@ services:
       - backend
     ports:
       - 3306:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: ${PASSWORD}
+    env_file:
+      - ../../config/mysql/mysql.env
     volumes:
       - ../../config/mysql:/etc/mysql/conf.d
       - ../../data/mysql:/var/lib/mysql

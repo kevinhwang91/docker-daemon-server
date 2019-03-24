@@ -8,12 +8,10 @@ services:
       - 1080:1080
     networks:
       - sslocal
-    environment:
-      SERVER: ${SERVER}
-      PASSWORD: ${PASSWORD}
-      SERVER_PORT: ${SERVER_PORT}
+    env_file:
+      - ../../config/privoxy/sslocal.env
     restart: always
-    command: ["ss-local", "-s", "${SERVER}", "-p", "${SERVER_PORT}", "-l", "1080", "-b", "0.0.0.0", "-k", "${PASSWORD}", "-m", "aes-256-cfb"]
+    command: ["ss-local"]
 
   privoxy:
     image: kevinhwang/privoxy
