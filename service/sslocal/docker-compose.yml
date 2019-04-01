@@ -9,7 +9,7 @@ services:
     networks:
       - sslocal
     env_file:
-      - ../../config/privoxy/sslocal.env
+      - ../../config/shadowsocks/sslocal.env
     restart: always
     command: ["ss-local"]
 
