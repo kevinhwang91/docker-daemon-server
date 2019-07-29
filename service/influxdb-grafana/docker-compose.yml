@@ -1,0 +1,28 @@
+version: "3.5"
+
+services:
+  influxdb:
+    image: influxdb:1.7-alpine
+    container_name: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    networks:
+      - monitor
+    volumes:
+      - ../../data/influxdb-grafana/influxdb:/var/lib/influxdb
+
+  grafana:
+    image: grafana/grafana:6.2.5
+    container_name: grafana
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - monitor
+    volumes:
+      - ../../data/influxdb-grafana/grafana:/var/lib/grafana
+
+networks:
+  monitor:
+    name: monitor
