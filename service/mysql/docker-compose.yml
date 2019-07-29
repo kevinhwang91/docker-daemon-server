@@ -2,9 +2,9 @@ version: "3.5"
 
 services:
   database:
-    image: "mysql:5.7.25"
+    image: mysql:5.7.25
     container_name: mysql
-    restart: "always"
+    restart: always
     networks:
       - backend
     ports:
