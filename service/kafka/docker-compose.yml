@@ -1,4 +1,4 @@
-version: "3.5"
+version: "3.7"
 services:
   kafka1:
     image: wurstmeister/kafka:2.12-2.1.0
