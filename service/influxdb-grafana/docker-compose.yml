@@ -10,7 +10,7 @@ services:
     networks:
       - monitor
     volumes:
-      - ../../data/influxdb-grafana/influxdb:/var/lib/influxdb
+      - influxdb:/var/lib/influxdb
 
   grafana:
     image: grafana/grafana:6.2.5
@@ -21,8 +21,12 @@ services:
     networks:
       - monitor
     volumes:
-      - ../../data/influxdb-grafana/grafana:/var/lib/grafana
+      - grafana:/var/lib/grafana
 
 networks:
   monitor:
     name: monitor
+
+volumes:
+  influxdb:
+  grafana:

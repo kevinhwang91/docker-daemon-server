@@ -12,9 +12,12 @@ services:
       - 6379:6379
     volumes:
       - ../../config/redis:/usr/local/etc/redis
-      - ../../data/redis:/data
+      - redis:/data
 
 networks:
   backend:
     name: backend
     external: true
+
+volumes:
+  redis:

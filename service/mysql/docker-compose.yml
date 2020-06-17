@@ -13,9 +13,12 @@ services:
       - ../../config/mysql/mysql.env
     volumes:
       - ../../config/mysql:/etc/mysql/conf.d
-      - ../../data/mysql:/var/lib/mysql
+      - mysql:/var/lib/mysql
 
 networks:
   backend:
     name: backend
     external: true
+
+volumes:
+  mysql:

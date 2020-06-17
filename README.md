@@ -12,5 +12,5 @@ The data of service during running should be ignored at git.
 To build docker service.
 
 ## service
-To make docker-compose file which may be using *.env file ignored at git.  
+To make docker-compose file which may be using *.env file ignored at git.
 The env file also has private environment variable such as password, etc.

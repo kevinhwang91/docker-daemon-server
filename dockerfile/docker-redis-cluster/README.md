@@ -6,11 +6,23 @@
 
 Docker image with redis built and installed from source and a cluster is built.
 
-The main primary use for this container is to test redis cluster code. Specially https://github.com/Grokzen/redis-py-cluster
 
-This repo is not intended to be a production quality docker build. It will also not be changed to use multiple containers or move away from supervisord, or to have support for different cluster managers, for example kubernetes, docker-ee or swarm. It will also not be made to handle persistent data between runs. However, any suggestions on improvements will be considered.
+## What this repo and container IS
 
-The container is made to be quick and easy to start, use and run.
+This repo exists as a resource to make it quick and simple to get a redis cluster up and running with no fuzz or issues with mininal effort. The primary use for this container is to get a cluster up and running in no time that you can use for demo/presentation/development. It is not intended or built for anything else.
+
+I also aim to have every single release of redis that supports a cluster available for use so you can run the exact version you want.
+
+I personally use this to develop redis cluster client code https://github.com/Grokzen/redis-py-cluster
+
+
+## What this repo and container IS NOT
+
+This container that i have built is not supposed to be some kind of production container or one that is used within any envrionment other then running locally on your machine. It is not ment to be run on kubernetes or in any other prod/stage/test/dev envrionment as a fully working commponent in that envrionment. If that works for you and your use-case then awesome. But this container will not change to fit any other primary solution then to be used locally on your machine.
+
+If you are looking for something else or some production quality or kubernetes compatible solution then you are looking in the wrong repo. There is other projects or forks of this repo that is compatible for that situation/solution.
+
+For all other purposes other then what has been stated you are free to fork and/or rebuild this container using it as a template for what you need.
 
 
 ## Redis instances inside the container
@@ -41,7 +53,7 @@ export REDIS_CLUSTER_IP=0.0.0.0
 If you are downloading the container from dockerhub, you must add the internal IP envrionment variable to your `docker run` command.
 
 ```
-docker run grokzen/redis-cluster:latest -e "IP=0.0.0.0" ...
+docker run  -e "IP=0.0.0.0" grokzen/redis-cluster:latest ...
 ```
 
 
@@ -103,6 +115,32 @@ When running with docker-compose set the environment variable on your system `RE
           SENTINEL: 'true'
 
 
+## Change number of nodes
+
+Be default, it is going to launch 3 masters with 1 slave per master. This is configurable through a number of environment variables:
+
+| Environment variable | Default |
+| -------------------- |--------:|
+| `INITIAL_PORT`       |    7000 |
+| `MASTERS`            |       3 |
+| `SLAVES_PER_MASTER`  |       1 | 
+
+Therefore, the total number of nodes (`NODES`) is going to be `$MASTERS * ( $SLAVES_PER_MASTER  + 1 )` and ports are going to range from `$INITIAL_PORT` to `$INITIAL_PORT + NODES - 1`.
+
+At the docker-compose provided by this repository, ports 7000-7050 are already mapped to the hosts'. Either if you need more than 50 nodes in total or if you need to change the initial port number, you should override those values.
+
+Also note that the number of sentinels (if enabled) is the same as the number of masters. The docker-compose file already maps ports 5000-5010 by default. You should also override those values if you have more than 10 masters.
+
+      version: '2'
+      services:
+        redis-cluster:
+          ...
+        environment:
+          INITIAL_PORT: 9000,
+          MASTERS: 2,
+          SLAVES_PER_MASTER: 2
+
+
 ## Build alternative redis versions
 
 For a release to be buildable it needs to be present at this url: http://download.redis.io/releases/
@@ -131,10 +169,12 @@ The following tags with pre-built images is available on `docker-hub`.
 
 Latest release in the most recent stable branch will be used as `latest` version.
 
-- latest == 5.0.3
+- latest == 5.0.5
 
 Redis 5.0.x version:
 
+- 5.0.5
+- 5.0.4
 - 5.0.3
 - 5.0.2
 - 5.0.1
@@ -142,6 +182,7 @@ Redis 5.0.x version:
 
 Redis 4.0.x versions:
 
+- 4.0.14
 - 4.0.13
 - 4.0.12
 - 4.0.11
@@ -159,6 +200,7 @@ Redis 4.0.x versions:
 
 Redis 3.2.x versions:
 
+- 3.2.13
 - 3.2.12
 - 3.2.11
 - 3.2.10
